@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" class="header-img" src="../assets/logo.png">
     <keep-alive>
       <component :is="state" @startGame="startGame($event)" :players="players"></component>
     </keep-alive>
@@ -100,14 +99,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 50px;
-}
-  .header-img {
-    width: 80%;
-    max-width: 500px;
-  }
 </style>

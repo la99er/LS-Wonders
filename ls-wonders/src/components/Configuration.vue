@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form @submit.prevent="">
 		<h2>Wähle deine Erweiterungen aus:</h2>
 		<div class="form-group check-small">
 			<input type="checkbox" id="wonderPack" v-model="game.extensions.wonderPack" >
@@ -27,7 +27,7 @@
 		<h2>Gib alle Spielernamen ein:</h2>
 		<div class="form-group" v-for="index in playerCount+1" :key="index">
 			<label :for="`player${index}`">Spieler {{ index }}:</label>
-			<input data-lpignore="true" type="text" :id="`player${index}`" v-model="game.players[index-1]" @change="calc()">
+			<input data-lpignore="true" :tabindex="index" autocomplete="off" type="text" :id="`player${index}`" v-model="game.players[index-1]" @change="calc()">
 			<button class="btn delete" v-if="(index > 1 && game.players.length >= index)" @click.prevent="remove(index)">X</button>
 		</div>
 		<button class="btn primary" v-if="playerCount > 1" @click.prevent="startGame()">Los Geht's!</button>
