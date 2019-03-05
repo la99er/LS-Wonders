@@ -2,31 +2,32 @@
 	<div class="container">
 		<h1>Auswertung</h1>
 		<nav>
-			<div class="icon-container" @click="decrease()">
+			<div class="icon-container" @click="prev()">
 				<fa-icon icon="arrow-left" v-if="state > 0"></fa-icon>
 			</div>
 			<h3>{{ phases[state] }}</h3>
-			<div class="icon-container" @click="increase()">
+			<div class="icon-container" @click="next()">
 				<fa-icon icon="arrow-right" v-if="state < phases.length - 1"></fa-icon>
 			</div>
 		</nav>
 		<form>
 			<div class="form-line" v-for="(player, i) in players" :key="i">
 				<label :for="`player${i}`">{{ player }}</label>
-				<input type="number" :name="`player${i}`" :id="`player${i}`">
+				<input type="number" :name="`player${i}`" :id="`player${i}`" v-model="data[i]">
 			</div>
-			<button class="btn primary" @click.prevent="increase()">Next</button>
+			<button class="btn primary" @click.prevent="next()">Next</button>
 		</form>
 	</div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
 	data() {
 		return {
-			state: 0
+			state: 0,
+			data: []
 		}
 	},
 	computed: {
@@ -34,20 +35,34 @@ export default {
 			players: state => state.game.players
 		}),
 		...mapGetters([
-			'phases'
+			'phases',
+			'scores'
 		])
 	},
 	methods: {
-		increase() {
+		next() {
+			this.setScore({key: this.state, values: this.data});
 			if (this.state < this.phases.length - 1) {
 				this.state++;
+				this.data = this.scores(this.state);
+			} else {
+				// All data was entered.
+				// Start calculating the score and navigate to the final result page.
 			}
 		},
-		decrease() {
+		prev() {
 			if (this.state > 0) {
 				this.state--;
 			}
-		}
+			this.data = this.scores(this.state);
+		},
+		...mapActions([
+			// Takes an object as argument with the following form:
+			// {key: number, values: [numbers]}
+			// key is the state of the assignment
+			// values is an array of all values in the order or players.
+			'setScore'
+		])
 	}
 }
 </script>
