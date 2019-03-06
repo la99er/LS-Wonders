@@ -1,113 +1,94 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" class="header-img" src="../assets/logo.png">
-    <keep-alive>
-      <component :is="state" @startGame="startGame($event)" :players="players"></component>
-    </keep-alive>
+  <div class="container">
+    <form @submit.prevent>
+      <h2>Wähle deine Erweiterungen aus:</h2>
+      <div class="form-group check-small">
+        <input type="checkbox" id="wonderPack" v-model="game.extensions.wonderPack">
+        <label for="wonderPack">Wonder Pack</label>
+      </div>
+      <div class="form-group check-small">
+        <input type="checkbox" id="leaders" v-model="game.extensions.leaders">
+        <label for="leaders">Leaders</label>
+      </div>
+      <div class="form-group check-small">
+        <input type="checkbox" id="cities" v-model="game.extensions.cities">
+        <label for="cities">Cities</label>
+      </div>
+      <div class="form-group check-small">
+        <input type="checkbox" id="babylon" v-model="game.extensions.babylon">
+        <label for="babylon">Babylon</label>
+      </div>
+      <hr>
+      <h2>Sonstige Einstellungen:</h2>
+      <div class="form-group">
+        <input type="checkbox" id="easy" v-model="game.easy">
+        <label for="easy">Einfache Variante (A only)</label>
+      </div>
+      <hr>
+      <h2>Gib alle Spielernamen ein:</h2>
+      <div class="form-line" v-for="index in playerCount+1" :key="index">
+        <label :for="`player${index}`">Spieler {{ index }}:</label>
+        <input
+          data-lpignore="true"
+          :tabindex="index"
+          autocomplete="off"
+          type="text"
+          :id="`player${index}`"
+          v-model="game.players[index-1]"
+          @change="calc()"
+        >
+        <!-- <button
+          class="btn delete"
+          v-if="(index > 1 && game.players.length >= index)"
+          @click.prevent="remove(index)"
+        >X</button> -->
+      </div>
+      <button class="btn primary" v-if="playerCount > 1" @click.prevent="startGame()">Los Geht's!</button>
+    </form>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Configuration from '@/components/Configuration.vue';
-import Assignments from '@/components/Assignments.vue';
-
+import { mapActions } from 'vuex';
 export default {
-  components: {
-    Configuration,
-    Assignments
-  },
   data() {
     return {
-      state: 'Configuration',
-      players: [],
-      wonders: {
-        vanilla: [
-          'Rhodos',
-          'Alexandria',
-          'Éphesos',
-          'Babylon',
-          'Olympia',
-          'Halikarnassos',
-          'Gizeh'
-        ],
-        wonderPack: [
-          'Stonehenge',
-          'Manneken Pis',
-          'The Great Wall',
-          'Abu Simbel'
-        ],
-        leaders: [
-          'Rom'
-        ],
-        cities: [
-          'Petra',
-          'Byzantium'
-        ],
-        played: []
+      ready: false,
+      game: {
+        players: [],
+        extensions: {
+          wonderPack: true,
+          leaders: true,
+          cities: true,
+          babylon: false
+        },
+        easy: false // If true, play only with A site
       }
+    };
+  },
+  computed: {
+    playerCount() {
+      return Math.min(7, this.game.players.length + 1) - 1;
     }
   },
   methods: {
-    startGame(game) {
-      this.wonders.played = this.wonders.vanilla;
-      
-      if (game.extensions.wonderPack) {
-        this.addWonders(this.wonders.wonderPack);
-      }
-      if (game.extensions.leaders) {
-        this.addWonders(this.wonders.leaders);
-      }
-      if (game.extensions.cities) {
-        this.addWonders(this.wonders.cities);
-      }
-      this.assignWonders(game.players, game.easy);
-      this.state = 'Assignments'
+    calc() {
+      this.game.players = this.game.players.filter(p => p != "");
     },
-    addWonders(wonders) {
-      this.wonders.played = this.wonders.played.concat(wonders);
+    remove(index) {
+      console.log(index);
+      this.game.players.splice(index - 1, 1);
     },
-    assignWonders(players, easy) {
-      // Assign a wonder to each player
-      let _vm = this;
-      let _side = 'A';
-      for (var wonders=[],i=0;i<this.wonders.played.length;++i) wonders[i]=_vm.wonders.played[i];
-      wonders = this.shuffle(wonders);
-      wonders = wonders.slice(0,players.length);
-      players.forEach((player, i) => {
-        if (!easy) {
-          _side = Math.round(Math.random()) ? 'A' : 'B';
-        }
-        this.players.push({
-          name: player,
-          wonder: wonders[i],
-          side: _side
-        });
-      });
-    },
-    shuffle(array) {
-      var tmp, current, top = array.length;
-      if(top) while(--top) {
-        current = Math.floor(Math.random() * (top + 1));
-        tmp = array[current];
-        array[current] = array[top];
-        array[top] = tmp;
-      }
-      return array;
-    }
-  },
-}
+    startGame() {
+			this.setGame(this.game);
+			this.$router.push('assign');
+		},
+		...mapActions([
+			'setGame'
+		])
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 50px;
-}
-  .header-img {
-    width: 80%;
-    max-width: 500px;
-  }
 </style>
