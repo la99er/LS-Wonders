@@ -47,7 +47,7 @@ const wonders = {
     let _side = 'A';
     wonders = Helper.shuffle(wonders);
     wonders = wonders.slice(0, count);
-    wonders.forEach((wonder, i) => {
+    wonders.forEach(wonder => {
       if (!easy) {
         _side = Math.round(Math.random()) ? 'A' : 'B';
       }

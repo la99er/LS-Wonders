@@ -20,30 +20,24 @@ html {
 
 #app {
   padding: 0 30px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
 
   .header-img {
+    display: block;
     width: 80%;
     max-width: 500px;
+    margin: 0 auto;
   }
 
   .container {
+    margin: 0 auto;
     width: 100%;
     max-width: 500px;
-    text-align: center;
   }
 }
 
 form {
-  display: flex;
-  flex-direction: column;
   margin-top: 10px;
-
-  * {
-    margin-bottom: 6px;
-  }
 
   .btn {
     align-self: center;
@@ -57,18 +51,30 @@ form {
     border-top: 3px double #ccc;
     width: 90%;
   }
+
+  button {
+    display: block;
+    margin: 0px auto;
+  }
+
   .form-group {
     margin: 4px;
   }
 
   .form-line {
-    display: flex;
-    width: 100%;
-    line-height: 30px;
-    justify-content: center;
+    margin-bottom: 8px;
 
     label {
-      margin-right: 10px;
+      display: inline-block;
+      text-align: center;
+      width: 100px;
+    }
+    
+    input[type=text] {
+      display: inline-block;
+      background: transparent;
+      border: 2px solid;
+      border-color: rgba(40, 40, 40, 0.4);
     }
 
     input[type="number"] {
@@ -106,68 +112,43 @@ a.btn {
   text-decoration: none;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-}
-
 input[type="checkbox"] + label {
   display: block;
-  margin: 0.2em;
+  margin: 8px;
   cursor: pointer;
-  padding: 0.2em;
+  padding: 4px;
   user-select: none;
 }
 
+// Hide the original checkbox
 input[type="checkbox"] {
   display: none;
 }
 
+// Display the new checkbox infront of the label
 input[type="checkbox"] + label:before {
   content: "\2714";
   border: 1px solid transparent;
-  border-radius: 0.2em;
-  width: 1em;
+  border-radius: 50%;
   display: inline-block;
+  width: 1em;
   height: 1em;
-  padding-left: 0.2em;
-  padding-bottom: 0.3em;
-  margin-right: 0.5em;
-  vertical-align: bottom;
-  color: transparent;
+  padding-left: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  color: transparent;  // Hide if not checked
   transition: 0.2s;
-  background-image: radial-gradient(#cbcfcb 60%, #5f635d);
+  background-image: radial-gradient(#cbcfcb 50%, #5f635d);
 }
 
+// Animate on clicking
 input[type="checkbox"] + label:active:before {
   transform: scale(0);
 }
 
+// If checkbox is checked
 input[type="checkbox"]:checked + label:before {
-  background-image: radial-gradient(#cbcfcb 60%, #5f635d);
-  border: 1px solid transparent;
-  color: #b5863a;
+  color: #b5863a;  // Show the font
 }
 
-input[type="checkbox"]:disabled + label:before {
-  transform: scale(1);
-  border-color: #aaa;
-}
-
-input[type="checkbox"]:checked:disabled + label:before {
-  transform: scale(1);
-  background-color: #bfb;
-  border-collapse: #bfb;
-}
-
-input[type="text"] {
-  background-color: transparent;
-  border: 2px solid;
-  border-color: rgba(40, 40, 40, 0.4);
-  width: 70%;
-}
-
-.form-group {
-  display: flex;
-}
 </style>
