@@ -11,15 +11,14 @@
 body,
 html {
   width: 100%;
-  background: url("./assets/background2.jpg") repeat local top left;
-  background-size: 100% auto;
+  background: url("./assets/background2.jpg") no-repeat center center fixed;
+  background-size: cover;
 
   font-family: "Arvo", serif;
   color: rgba(50, 50, 50, 1);
 }
 
 #app {
-  padding: 0 30px;
   align-items: center;
 
   .header-img {
@@ -31,7 +30,7 @@ html {
 
   .container {
     margin: 0 auto;
-    width: 100%;
+    width: 90%;
     max-width: 500px;
   }
 }
@@ -63,13 +62,25 @@ form {
 
   .form-line {
     margin-bottom: 8px;
+    text-align: left;
 
     label {
-      display: inline-block;
-      text-align: center;
-      width: 100px;
+      display: inline;
+      text-align: right;
+      margin-right: 12px;
+	    overflow: hidden;
     }
-    
+    .label {
+      display: inline-block;
+      text-align: right;
+      width: 40%;
+    }
+    .wrapper {
+      display: inline-block;
+      line-height: 2em;
+      width: 40%;
+      text-align: right;
+    }
     input[type=text] {
       display: inline-block;
       background: transparent;
@@ -78,7 +89,18 @@ form {
     }
 
     input[type="number"] {
-      width: 50px;
+      display: inline-block;
+      width: 20px;
+      margin: 0 4px;
+      line-height: 1.5em;
+      -moz-appearance: textfield;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button
+    {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
 }
@@ -92,19 +114,21 @@ form {
   &.primary {
     background-color: rgba(50, 50, 50, 0.7);
     color: white;
-    margin: 10px;
+    margin: 20px auto;
     padding: 8px;
     min-width: 100px;
   }
 
   &.delete {
+    display: inline-block;
     background: transparent;
     color: rgba(0, 0, 0, 0.8);
     font-weight: bold;
     border-radius: 2px;
     position: relative;
-    width: 20px;
-    right: 24px;
+    line-height: 20px;
+    width: 24px;
+    right: 26px;
   }
 }
 

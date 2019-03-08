@@ -6,14 +6,14 @@
 				<fa-icon icon="arrow-left" v-if="state > 0"></fa-icon>
 			</div>
 			<h3>{{ phases[state] }}</h3>
-			<div class="icon-container" @click="next()">
-				<fa-icon icon="arrow-right" v-if="state < phases.length - 1"></fa-icon>
-			</div>
 		</nav>
 		<form>
 			<div class="form-line" v-for="(player, i) in players" :key="i">
-				<label :for="`player${i}`">{{ player }}</label>
-				<input type="number" :name="`player${i}`" :id="`player${i}`" v-model="data[i]">
+				<span class="label">{{ player }}</span>
+				<input type="number" :name="`player${i}`" :id="`player${i}`" v-model="data1[i]" @input="calc(i)">
+				<input v-if="state === 5" type="number" :name="`gear${i}`" :id="`gear${i}`" v-model="gears[i]" @input="calc(i)">
+				<input v-if="state === 5" type="number" :name="`compass${i}`" :id="`compass${i}`" v-model="compasses[i]" @input="calc(i)">
+				<span v-if="state === 5" class="score"> = ({{ score[i] }})</span>
 			</div>
 			<button class="btn primary" @click.prevent="next()">Next</button>
 		</form>
@@ -22,12 +22,16 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import Helper from '@/helpers/helper.js';
 
 export default {
 	data() {
 		return {
 			state: 0,
-			data: []
+			score: [],
+			data1: [],
+			gears: [],
+			compasses: []
 		}
 	},
 	computed: {
@@ -41,10 +45,12 @@ export default {
 	},
 	methods: {
 		next() {
-			this.setScore({key: this.state, values: this.data});
+			// TODO: If state == 5, write the correct score to the data
+			// Care: The value of the result is data[]
+			this.setScore({key: this.state, values: this.data1});
 			if (this.state < this.phases.length - 1) {
 				this.state++;
-				this.data = this.scores(this.state);
+				this.data1 = this.scores(this.state);
 			} else {
 				// All data was entered.
 				// Start calculating the score and navigate to the final result page.
@@ -54,7 +60,12 @@ export default {
 			if (this.state > 0) {
 				this.state--;
 			}
-			this.data = this.scores(this.state);
+			this.data1 = this.scores(this.state);
+		},
+		calc(i = 0) {
+			if (this.state === 5) {
+				this.score[i] = Helper.calculateScience(this.data1[i], this.gears[i], this.compasses[i]);
+			}
 		},
 		...mapActions([
 			// Takes an object as argument with the following form:
@@ -68,22 +79,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-container {
-	height: 30px;
-	width: 30px;
+.container {
 	text-align: center;
-	line-height: 30px;
-	cursor: pointer;
 }
 
+.score {
+	display: inline-block;
+}
 
 nav {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	
+	.icon-container {
+		height: 30px;
+		width: 30px;
+		text-align: center;
+		line-height: 30px;
+		cursor: pointer;
+		float: left;
+	}	
 	h3 {
 		margin: 4px 10px;
+		display: inline-block;
 	}
 }
 </style>

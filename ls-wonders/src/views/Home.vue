@@ -35,13 +35,13 @@
           type="text"
           :id="`player${index}`"
           v-model="game.players[index-1]"
-          @change="calc()"
+          @input="calc()"
         >
-        <!-- <button
+        <button
           class="btn delete"
-          v-if="(index > 1 && game.players.length >= index)"
+          v-if="(game.players.length >= index)"
           @click.prevent="remove(index)"
-        >X</button> -->
+        >X</button>
       </div>
       <button class="btn primary" v-if="playerCount > 1" @click.prevent="startGame()">Los Geht's!</button>
     </form>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -80,12 +80,10 @@ export default {
       this.game.players.splice(index - 1, 1);
     },
     startGame() {
-			this.setGame(this.game);
-			this.$router.push('assign');
-		},
-		...mapActions([
-			'setGame'
-		])
+      this.setGame(this.game);
+      this.$router.push("assign");
+    },
+    ...mapActions(["setGame"])
   }
 };
 </script>

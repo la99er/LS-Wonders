@@ -8,5 +8,10 @@ export default {
       array[top] = tmp;
     }
     return array;
+  },
+  calculateScience(plates = 0, gears = 0, compasses = 0) {
+    const sets = Math.min(plates, gears, compasses) * 7;
+    const singles = Math.pow(plates, 2) + Math.pow(gears, 2) + Math.pow(compasses, 2);
+    return sets + singles;
   }
 }

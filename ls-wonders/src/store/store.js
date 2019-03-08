@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { wonders } from '@/helpers/wonders.js';
+import Helper from '@/helpers/helper.js';
 
 Vue.use(Vuex);
 
