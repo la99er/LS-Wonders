@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export const PUSH_SCORE = "PUSH_SCORE";
 export const CLEAR_SCORE = "CLEAR_SCORE";
+export const SET_SCORE = "SET_SCORE";
 export const SET_GAME = "SET_GAME";
 export const CATEGORIES = [
   "war",
@@ -31,7 +32,11 @@ export default new Vuex.Store({
         wonder: [],
         profane: [],
         markets: [],
-        science: [],
+        science: {
+          plates: [],
+          gears: [],
+          compasses: []
+        },
         guild: [],
         leader: [],
         blackCards: []
@@ -91,8 +96,11 @@ export default new Vuex.Store({
     [PUSH_SCORE](state, payload) {
       state.game.score[payload.key].push(payload.value);
     },
+    [SET_SCORE](state, payload) {
+      state.game.score[payload.key] = payload.value;
+    },
     [CLEAR_SCORE](state, payload) {
-      state.game.score[payload] = [];
+      state.game.score[payload.key] = payload.value;
     }
   },
   actions: {
@@ -101,10 +109,14 @@ export default new Vuex.Store({
     // key is the state of the assignment
     // values is an array of all values in the order of players.
     setScore({ commit }, scores) {
-      commit(CLEAR_SCORE, CATEGORIES[scores.key]);
-      scores.values.forEach(score => {
-        commit(PUSH_SCORE, { key: CATEGORIES[scores.key], value: score });
-      });
+      // Clear the old values
+      if (scores.key === 5) {
+        commit(CLEAR_SCORE, { key: CATEGORIES[scores.key], value: {}});
+      } else {
+        commit(CLEAR_SCORE, { key: CATEGORIES[scores.key], value: []});
+      }
+      // Then write the new values
+      commit(SET_SCORE, { key: CATEGORIES[scores.key], value: scores.values });      
     },
     setGame({ commit }, game) {
       const w = wonders.getRandomWonders(game.players.length, game.extensions, game.easy);
