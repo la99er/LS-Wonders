@@ -36,6 +36,8 @@
           :id="`player${index}`"
           v-model="game.players[index-1]"
           @input="calc()"
+          @keydown.enter.prevent="next"
+          @keydown.ctrl.enter="startGame"
         >
         <button
           class="btn delete"
@@ -82,6 +84,10 @@ export default {
     startGame() {
       this.setGame(this.game);
       this.$router.push("assign");
+    },
+    next(event) {
+      const c = document.getElementById(`player${this.game.players.length + 1}`);
+      c.focus();
     },
     ...mapActions(["setGame"])
   }
