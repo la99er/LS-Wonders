@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { wonders } from '@/helpers/wonders.js';
 import Helper from '@/helpers/helper.js';
+import { stat } from "fs";
 
 Vue.use(Vuex);
 
@@ -87,6 +88,23 @@ export default new Vuex.Store({
         });
       });
       return result;
+    },
+    /**
+     * Returns an object that 
+     */
+    scoreTable: state => {
+      let scores = Helper.calculateScore(state.game.score, state.game.players);
+      let result = [];
+      for (let i = 0; i < scores.length; i++) {
+        result.push({
+          name: state.game.players[i],
+          score: scores[i],
+          wonder: state.game.wonders[i]
+        })
+      }
+      return result.sort((obj1, obj2) => {
+        return obj2.score - obj1.score;
+      });
     }
   },
   mutations: {
@@ -109,13 +127,6 @@ export default new Vuex.Store({
     // key is the state of the assignment
     // values is an array of all values in the order of players.
     setScore({ commit }, scores) {
-      // Clear the old values
-      if (scores.key === 5) {
-        commit(CLEAR_SCORE, { key: CATEGORIES[scores.key], value: {}});
-      } else {
-        commit(CLEAR_SCORE, { key: CATEGORIES[scores.key], value: []});
-      }
-      // Then write the new values
       commit(SET_SCORE, { key: CATEGORIES[scores.key], value: scores.values });      
     },
     setGame({ commit }, game) {

@@ -13,5 +13,25 @@ export default {
     const sets = Math.min(plates, gears, compasses) * 7;
     const singles = Math.pow(plates, 2) + Math.pow(gears, 2) + Math.pow(compasses, 2);
     return sets + singles;
-  }
+  },
+  calculateScore(scores, players) {
+    let result = Array.apply(null, Array(players.length)).map(Number.prototype.valueOf,0);
+    for (let [category, values] of Object.entries(scores)) {
+      if (category === 'science') {
+        for (let i = 0; i < players.length; i++) {
+          result[i] += this.calculateScience(
+            values.plates[i],
+            values.gears[i],
+            values.compasses[i]
+          );
+        }
+      } else {
+        values.forEach((value, index) => {
+          result[index] += Number(value);
+        });
+      }
+    }
+    return result;
+  },
+
 }

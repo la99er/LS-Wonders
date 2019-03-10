@@ -27,8 +27,8 @@ export default new Router({
       component: Evaluate
     },
     {
-      path: "/results",
-      name: 'results',
+      path: "/result",
+      name: 'result',
       component: Result
     }
   ]

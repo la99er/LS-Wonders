@@ -84,7 +84,7 @@ export default {
       } else {
         // All data was entered.
 				// Start calculating the score and navigate to the final result page.
-				this.$router.push('/');
+				this.$router.push('/result');
       }
     },
     prev() {
