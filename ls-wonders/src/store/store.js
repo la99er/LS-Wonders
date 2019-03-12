@@ -47,6 +47,7 @@ export default new Vuex.Store({
         wonderPack: false,
         leaders: false,
         cities: false,
+        armada: false,
         babylon: false
       },
       easy: false

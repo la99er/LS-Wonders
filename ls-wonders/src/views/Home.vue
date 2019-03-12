@@ -2,25 +2,29 @@
   <div class="container">
     <form @submit.prevent>
       <h2>Wähle deine Erweiterungen aus:</h2>
-      <div class="form-group check-small">
+      <div class="check-small">
         <input type="checkbox" id="wonderPack" v-model="game.extensions.wonderPack">
         <label for="wonderPack">Wonder Pack</label>
       </div>
-      <div class="form-group check-small">
+      <div class="check-small">
         <input type="checkbox" id="leaders" v-model="game.extensions.leaders">
         <label for="leaders">Leaders</label>
       </div>
-      <div class="form-group check-small">
+      <div class="check-small">
         <input type="checkbox" id="cities" v-model="game.extensions.cities">
         <label for="cities">Cities</label>
       </div>
-      <div class="form-group check-small">
+      <div class="check-small">
+        <input type="checkbox" id="armada" v-model="game.extensions.armada">
+        <label for="armada">Armada</label>
+      </div>
+      <div class="check-small">
         <input type="checkbox" id="babylon" v-model="game.extensions.babylon">
         <label for="babylon">Babylon</label>
       </div>
       <hr>
       <h2>Sonstige Einstellungen:</h2>
-      <div class="form-group">
+      <div>
         <input type="checkbox" id="easy" v-model="game.easy">
         <label for="easy">Einfache Variante (A only)</label>
       </div>
@@ -36,7 +40,7 @@
           :id="`player${index}`"
           v-model="game.players[index-1]"
           @input="calc()"
-          @keydown.enter.prevent="next"
+          @keydown.enter.prevent="focus()"
           @keydown.ctrl.enter="startGame"
         >
         <button
@@ -62,6 +66,7 @@ export default {
           wonderPack: true,
           leaders: true,
           cities: true,
+          armada: false,
           babylon: false
         },
         easy: false // If true, play only with A site
@@ -85,7 +90,7 @@ export default {
       this.setGame(this.game);
       this.$router.push("assign");
     },
-    next(event) {
+    focus() {
       const c = document.getElementById(`player${this.game.players.length + 1}`);
       c.focus();
     },

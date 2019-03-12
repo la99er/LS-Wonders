@@ -7,35 +7,42 @@
       </div>
       <h3>{{ phases[state] }}</h3>
     </nav>
-    <form>
-      <div class="form-line" v-for="(player, i) in players" :key="i">
-        <span class="label">{{ player }}</span>
-        <input
-          type="number"
-          :name="`player${i}`"
-          :id="`player${i}`"
-          v-model="data[i]"
-          @input="calc(i)"
-        >
-        <input
-          v-if="state === 5"
-          type="number"
-          :name="`gear${i}`"
-          :id="`gear${i}`"
-          v-model="gears[i]"
-          @input="calc(i)"
-        >
-        <input
-          v-if="state === 5"
-          type="number"
-          :name="`compass${i}`"
-          :id="`compass${i}`"
-          v-model="compasses[i]"
-          @input="calc(i)"
-        >
-        <span v-if="state === 5" class="score">= ({{ score[i] }})</span>
+    <form @submit.prevent="next()">
+      <div class="number-line" v-for="(player, i) in players" :key="i">
+        <label class="label col" :for="`player${i}`">{{ player }}:</label>
+        <div class="wrapper">
+          <input
+            autocomplete="off"
+            type="number"
+            :name="`player${i}`"
+            :id="`player${i}`"
+            v-model="data[i]"
+            @input="calc(i)"
+          >
+          <input
+            autocomplete="off"
+            v-if="state === SCIENCE"
+            type="number"
+            :name="`gear${i}`"
+            :id="`gear${i}`"
+            v-model="gears[i]"
+            @input="calc(i)"
+          >
+          <input
+            autocomplete="off"
+            v-if="state === SCIENCE"
+            type="number"
+            :name="`compass${i}`"
+            :id="`compass${i}`"
+            v-model="compasses[i]"
+            @input="calc(i)"
+          >
+        </div>
+        <div class="col">
+          <span v-if="state === SCIENCE" class="score">= ({{ score[i] }})</span>
+        </div>
       </div>
-      <button class="btn primary" @click.prevent="next()">Next</button>
+      <button class="btn primary">Next</button>
     </form>
   </div>
 </template>
@@ -47,6 +54,7 @@ import Helper from "@/helpers/helper.js";
 export default {
   data() {
     return {
+      SCIENCE: 5,
       state: 0,
       score: [],
       data: [],
@@ -54,8 +62,14 @@ export default {
       compasses: []
     };
   },
-  created() {
-    this.data = this.scores(this.state);
+  mounted() {
+    this.init();
+    this.calc(1);
+  },
+  updated() {
+    if (this.state === this.SCIENCE) {
+
+    }
   },
   computed: {
     ...mapState({
@@ -65,7 +79,7 @@ export default {
   },
   methods: {
     next() {
-      if (this.state === 5) {
+      if (this.state === this.SCIENCE) {
         this.setScore({
           key: this.state,
           values: {
@@ -83,18 +97,18 @@ export default {
         this.init();
       } else {
         // All data was entered.
-				// Start calculating the score and navigate to the final result page.
-				this.$router.push('/result');
+        // Start calculating the score and navigate to the final result page.
+        this.$router.push("/result");
       }
     },
     prev() {
       if (this.state > 0) {
         this.state--;
-				this.init();
-			}
+        this.init();
+      }
     },
     calc(i = 0) {
-      if (this.state === 5) {
+      if (this.state === this.SCIENCE) {
         this.score[i] = Helper.calculateScience(
           this.data[i],
           this.gears[i],
@@ -103,13 +117,14 @@ export default {
       }
     },
     init() {
-      if (this.state === 5) {
-				this.data = this.scores(this.state).plates;
-				this.gears = this.scores(this.state).gears;
-				this.compasses = this.scores(this.state).compasses;
+      if (this.state === this.SCIENCE) {
+        this.data = this.scores(this.state).plates;
+        this.gears = this.scores(this.state).gears;
+        this.compasses = this.scores(this.state).compasses;
       } else {
         this.data = this.scores(this.state);
       }
+      document.getElementById("player0").focus();
     },
     ...mapActions([
       // Takes an object as argument with the following form:
@@ -127,9 +142,6 @@ export default {
   text-align: center;
 }
 
-.score {
-  display: inline-block;
-}
 
 nav {
   .icon-container {
@@ -143,6 +155,8 @@ nav {
   h3 {
     margin: 4px 10px;
     display: inline-block;
+    position: relative;
+    right: 14px;
   }
 }
 </style>

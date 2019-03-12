@@ -1,24 +1,12 @@
 form {
-  // background-color: rgba($color: #000000, $alpha: 0.2);
 
   .form-line, .form-group {
     margin-bottom: 8px;
-  }
-  h2 {
-    margin: 0;
   }
   hr {
     border: 0;
     border-top: 3px double #ccc;
     width: 100%;
-  }
-
-  button {
-    display: block;
-    margin: 0px auto;
-  }
-
-  .form-group {
   }
 
   .form-line {
@@ -31,14 +19,46 @@ form {
     
     input[type=text] {
       background: transparent;
+      height: 18px;
       border: 2px solid;
       max-width: 250px;
       width: 50%;
-      border-color: rgba(40, 40, 40, 0.4);
+      border-color: rgba(#000, 0.6);
+    }
+
+    
+
+    .wrapper {
+      display: inline-block;
+      line-height: 2em;
+      width: 40%;
+      text-align: right;
+    }
+  }
+
+  .number-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+
+    label {
+      text-align: right;
+    }
+    .score {
+      display: inline-block;
+      width: 100%;
+      text-align: left;
+    }
+    
+    .wrapper {
+      margin: 0 4px;
+    }
+    .col {
+      width: 33%;
     }
 
     input[type="number"] {
-      display: inline-block;
       width: 20px;
       margin: 0 4px;
       line-height: 1.5em;
@@ -50,49 +70,6 @@ form {
     {
       -webkit-appearance: none;
       margin: 0;
-    }
-
-    .wrapper {
-      display: inline-block;
-      line-height: 2em;
-      width: 40%;
-      text-align: right;
-    }
-  }
-
-  .btn {
-    align-self: center;
-    border: none;
-    border-radius: 2px;
-    text-align: center;
-    cursor: pointer;
-
-    &.primary {
-      background-color: rgba(50, 50, 50, 0.8);
-      color: white;
-      margin: 20px auto;
-      padding: 8px;
-      min-width: 100px;
-      transition: all 0.1s;
-      &:active {
-        transform: scale(0.95);
-      }
-    }
-  
-    &.delete {
-      display: inline-block;
-      background: transparent;
-      color: rgba(0, 0, 0, 0.8);
-      font-weight: bold;
-      border-radius: 0px;
-      position: relative;
-      right: 28px;
-      line-height: 1.3em;
-      background: rgba(255, 0, 0, 0.5);
-      transition: all 0.1s;
-      &:active {
-        transform: scale(0)
-      }
     }
   }
 
@@ -133,5 +110,40 @@ form {
   // If checkbox is checked
   input[type="checkbox"]:checked + label:before {
     color: #b5863a;  // Show the font
+  }
+}
+
+.btn {
+  margin: 0px auto;
+  display: block;
+  align-self: center;
+  border: none;
+  border-radius: 2px;
+  text-align: center;
+  cursor: pointer;
+
+  &.primary {
+    background-color: rgba(50, 50, 50, 0.8);
+    color: white;
+    margin: 20px auto;
+    padding: 8px;
+    min-width: 100px;
+    transition: all 0.1s;
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &.delete {
+    display: inline-block;
+    background: transparent;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    border-radius: 0px;
+    position: relative;
+    width: 26px;
+    height: 20px;
+    right: 28px;
+    background: rgba(255, 0, 0, 0.5);
   }
 }

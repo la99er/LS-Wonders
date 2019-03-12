@@ -1,35 +1,44 @@
 <template>
   <div class="container">
     <h1>Zuteilung</h1>
-    <assign
+    <div class="wrapper">
+      <assign
       v-for="(assignment, index) in assignments"
       :key="index"
       :name="assignment.name"
       :wonder="assignment.wonder"
       :side="assignment.side"
-    ></assign>
-		<router-link to="/evaluate" class="btn primary">Auswerten</router-link>
+      ></assign>
+    </div>    
+    <router-link to="/evaluate" class="btn primary">Auswerten</router-link>
   </div>
 </template>
 
 <script>
 import Assign from "@/components/Assign.vue";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
+    // Component to display the assigned wonders
     Assign
   },
   computed: {
     ...mapGetters([
-      'assignments'
+      // Get the assignments by the store.
+      // {name: string, wonder: string, side: char (A/B)}
+      "assignments"
     ])
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   text-align: center;
+
+  .wrapper {
+    margin: 10px;
+  }
 }
 </style>

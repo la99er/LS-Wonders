@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <p>{{ name }} - {{ wonder }} ({{ side }})</p>
-    </div>
+    <p>{{ name }} - {{ wonder }} ({{ side }})</p>
 </template>
 
 <script>

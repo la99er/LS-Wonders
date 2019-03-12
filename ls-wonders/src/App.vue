@@ -7,21 +7,29 @@
 
 <style lang="scss">
 @import "./scss/forms.scss";
+@import "./scss/general.scss";
 @import url("https://fonts.googleapis.com/css?family=Arvo");
 
 body,
 html {
-  width: 100%;
-  background: url("./assets/background2.jpg") no-repeat center center fixed;
+  margin: 0;
+  padding: 0;
+  background: url("./assets/background1.jpg") no-repeat center center fixed;
   background-size: cover;
 
   font-family: "Arvo", serif;
   color: rgba(50, 50, 50, 1);
 }
 
-#app {
-  align-items: center;
+html {
+  height: 100%;
+  min-height: 100%;
+}
+body {
+  min-height: 100%;
+}
 
+#app {
   .header-img {
     display: block;
     width: 80%;
@@ -35,13 +43,4 @@ html {
     max-width: 500px;
   }
 }
-
-
-
-a.btn {
-  text-decoration: none;
-}
-
-
-
 </style>
