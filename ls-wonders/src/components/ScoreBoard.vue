@@ -5,7 +5,7 @@
       <h5 class="wonder">Abu Simbel (A)</h5>
     </div>
     <div class="content inner">
-      <score-bars class="scores" />
+      <score-bars />
       <div class="total">
         <h5>Total</h5>
         <h5>74</h5>
@@ -42,10 +42,6 @@ export default {
   }
 
   .content {
-    .scores {
-      width: 70%;
-      background-color: green;
-    }
     .total {
       margin: 0 10px 10px 10px;
       background-color: #4d7585;
