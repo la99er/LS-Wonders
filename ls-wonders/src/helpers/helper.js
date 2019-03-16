@@ -14,7 +14,15 @@ export default {
     const singles = Math.pow(plates, 2) + Math.pow(gears, 2) + Math.pow(compasses, 2);
     return sets + singles;
   },
+
+  /**
+   * Returns an array that contains the total score of all players. 
+   * Index of the score is the number of the player.
+   * @param {Object} scores Scores object of the store.js file
+   * @param {Array} players Array of all player names.
+   */
   calculateScore(scores, players) {
+    // Create an empty array in length of number of players and initialize them with 0.
     let result = Array.apply(null, Array(players.length)).map(Number.prototype.valueOf,0);
     for (let [category, values] of Object.entries(scores)) {
       if (category === 'science') {

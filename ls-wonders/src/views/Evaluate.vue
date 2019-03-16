@@ -54,7 +54,6 @@ import Helper from "@/helpers/helper.js";
 export default {
   data() {
     return {
-      SCIENCE: 5,
       state: 0,
       score: [],
       data: [],
@@ -66,12 +65,10 @@ export default {
     this.init();
     this.calc(1);
   },
-  updated() {
-    if (this.state === this.SCIENCE) {
-
-    }
-  },
   computed: {
+    SCIENCE: function() {
+      return this.phases.includes("Seekrieg") ? 6 : 5;
+    },
     ...mapState({
       players: state => state.game.players
     }),

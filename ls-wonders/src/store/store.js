@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { wonders } from '@/helpers/wonders.js';
-import Helper from '@/helpers/helper.js';
+import { wonders } from "@/helpers/wonders.js";
+import Helper from "@/helpers/helper";
+import Phases from "@/helpers/phases";
 import { stat } from "fs";
 
 Vue.use(Vuex);
@@ -10,17 +11,6 @@ export const PUSH_SCORE = "PUSH_SCORE";
 export const CLEAR_SCORE = "CLEAR_SCORE";
 export const SET_SCORE = "SET_SCORE";
 export const SET_GAME = "SET_GAME";
-export const CATEGORIES = [
-  "war",
-  "money",
-  "wonder",
-  "profane",
-  "markets",
-  "science",
-  "guild",
-  "leader",
-  "blackCards"
-];
 
 export default new Vuex.Store({
   state: {
@@ -29,6 +19,7 @@ export default new Vuex.Store({
       players: [],
       score: {
         war: [],
+        navalWar: [],
         money: [],
         wonder: [],
         profane: [],
@@ -39,6 +30,7 @@ export default new Vuex.Store({
           compasses: []
         },
         guild: [],
+        islands: [],
         leader: [],
         blackCards: []
       },
@@ -60,11 +52,16 @@ export default new Vuex.Store({
       "Märkte",
       "Wissenschaft",
       "Gilden"
-    ]
+    ],
+    categories: []
   },
   getters: {
     phases: state => {
       let result = state.phases;
+      if (state.game.extensions.armada) {
+        result.splice(1, 0, "Seekrieg");
+        result.push("Inseln");
+      }
       if (state.game.extensions.leaders) {
         result.push("Leader");
       }
@@ -77,7 +74,8 @@ export default new Vuex.Store({
       return result;
     },
     scores: state => key => {
-      return state.game.score[CATEGORIES[key]];
+      console.log(state.game.score);
+      return state.game.score[state.categories[key]];
     },
     assignments: state => {
       let result = [];
@@ -91,20 +89,25 @@ export default new Vuex.Store({
       return result;
     },
     /**
-     * Returns an object that 
+     * Returns an array of objects that have:
+     * - name: name of the player,
+     * - total: total score the player achieved
+     * - wonder: wonder object that contains:
+     *  + name: name of the wonder
+     *  + side: side of the wonder
      */
     scoreTable: state => {
-      let scores = Helper.calculateScore(state.game.score, state.game.players);
+      let totals = Helper.calculateScore(state.game.score, state.game.players);
       let result = [];
-      for (let i = 0; i < scores.length; i++) {
+      for (let i = 0; i < totals.length; i++) {
         result.push({
           name: state.game.players[i],
-          score: scores[i],
+          total: totals[i],
           wonder: state.game.wonders[i]
-        })
+        });
       }
       return result.sort((obj1, obj2) => {
-        return obj2.score - obj1.score;
+        return obj2.total - obj1.total;
       });
     }
   },
@@ -127,12 +130,44 @@ export default new Vuex.Store({
     // {key: number, values: [numbers]}
     // key is the state of the assignment
     // values is an array of all values in the order of players.
-    setScore({ commit }, scores) {
-      commit(SET_SCORE, { key: CATEGORIES[scores.key], value: scores.values });      
+    setScore({ state, commit }, scores) {
+      commit(SET_SCORE, {
+        key: state.categories[scores.key],
+        value: scores.values
+      });
     },
-    setGame({ commit }, game) {
-      const w = wonders.getRandomWonders(game.players.length, game.extensions, game.easy);
-      Object.assign(game, {['wonders']: w});
+    initGame({ commit }, game) {
+      const w = wonders.getRandomWonders(
+        game.players.length,
+        game.extensions,
+        game.easy
+      );
+      Object.assign(game, { ["wonders"]: w });
+      const p = Phases.getPhases(game.extensions);
+
+      const categories = [
+        "war",
+        "money",
+        "wonder",
+        "profane",
+        "markets",
+        "science",
+        "guild"
+      ];
+      if (game.extensions.armada) {
+        categories.splice(1, 0, "navalWar");
+        categories.push("islands");
+      }
+      if (game.extensions.leaders) {
+        categories.push("leader");
+      }
+      if (game.extensions.cities) {
+        categories.push("blackCards");
+      }
+      if (game.extensions.babylon) {
+        categories.push("babel");
+      }
+      game.categories = categories;
       commit(SET_GAME, game);
     }
   }

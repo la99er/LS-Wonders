@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <score-board />
-    <div v-for="(score, index) in scoreTable" :key="index">
-
-      <p>{{ score.name }} hat {{ score.score }} Punkte mit {{ score.wonder.name }} ({{ score.wonder.side }}) erzielt.</p>
-    </div>
+    <score-board v-for="(score, index) in scoreTable" :key="index" :score="score" />
   </div>
 </template>
 

@@ -1,14 +1,14 @@
 <template>
   <div class="board">
     <div class="header inner">
-      <h4 class="name">Lars</h4>
-      <h5 class="wonder">Abu Simbel (A)</h5>
+      <h4 class="name">{{ score.name }}</h4>
+      <h5 class="wonder">{{ `${ score.wonder.name } (${ score.wonder.side })` }}</h5>
     </div>
     <div class="content inner">
       <score-bars />
       <div class="total">
         <h5>Total</h5>
-        <h5>74</h5>
+        <h5>{{ score.total }}</h5>
       </div>
     </div>
   </div>
@@ -18,6 +18,7 @@
 import ScoreBars from '@/components/ScoreBars.vue'
 
 export default {
+  props: ["score"],
   components: {
     ScoreBars
   },
@@ -30,6 +31,7 @@ export default {
   background-color: rgba($color: #55534c, $alpha: 0.8);
   display: flex;
   flex-direction: column;
+  margin-bottom: 8px;
 
   .header {
     .name {

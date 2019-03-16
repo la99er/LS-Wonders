@@ -19,8 +19,12 @@
         <label for="armada">Armada</label>
       </div>
       <div class="check-small">
-        <input type="checkbox" id="babylon" v-model="game.extensions.babylon">
-        <label for="babylon">Babylon</label>
+        <input type="checkbox" id="babel" v-model="game.extensions.babel">
+        <label for="babel">Turmbau zu Babel</label>
+      </div>
+      <div class="check-small">
+        <input type="checkbox" id="projects" v-model="game.extensions.projects">
+        <label for="projects">Bauvorhaben</label>
       </div>
       <hr>
       <h2>Sonstige Einstellungen:</h2>
@@ -49,7 +53,12 @@
           @click.prevent="remove(index)"
         >X</button>
       </div>
-      <button class="btn primary" v-if="playerCount > 1" @click.prevent="startGame()">Los Geht's!</button>
+      <button
+        class="btn primary"
+        v-if="playerCount > 1"
+        @click.prevent="startGame()"
+        :tabindex="playerCount + 1"
+      >Los Geht's!</button>
     </form>
   </div>
 </template>
@@ -59,7 +68,6 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      ready: false,
       game: {
         players: [],
         extensions: {
@@ -67,7 +75,8 @@ export default {
           leaders: true,
           cities: true,
           armada: false,
-          babylon: false
+          babel: false,
+          projects: false
         },
         easy: false // If true, play only with A site
       }
@@ -83,18 +92,19 @@ export default {
       this.game.players = this.game.players.filter(p => p != "");
     },
     remove(index) {
-      console.log(index);
       this.game.players.splice(index - 1, 1);
     },
     startGame() {
-      this.setGame(this.game);
+      this.initGame(this.game);
       this.$router.push("assign");
     },
     focus() {
-      const c = document.getElementById(`player${this.game.players.length + 1}`);
+      const c = document.getElementById(
+        `player${this.game.players.length + 1}`
+      );
       c.focus();
     },
-    ...mapActions(["setGame"])
+    ...mapActions(["initGame"])
   }
 };
 </script>
