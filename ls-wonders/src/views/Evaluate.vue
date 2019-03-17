@@ -5,41 +5,24 @@
       <div class="icon-container" @click="prev()">
         <fa-icon icon="arrow-left" v-if="state > 0"></fa-icon>
       </div>
-      <h3>{{ phases[state] }}</h3>
+      <h3>{{ currentPhase.title }}</h3>
     </nav>
     <form @submit.prevent="next()">
       <div class="number-line" v-for="(player, i) in players" :key="i">
-        <label class="label col" :for="`player${i}`">{{ player }}:</label>
+        <label class="label col">{{ player }}:</label>
         <div class="wrapper">
           <input
+            v-for="j in currentPhase.inputFields"
+            :key="j"
             autocomplete="off"
             type="number"
-            :name="`player${i}`"
-            :id="`player${i}`"
-            v-model="data[i]"
-            @input="calc(i)"
-          >
-          <input
-            autocomplete="off"
-            v-if="state === SCIENCE"
-            type="number"
-            :name="`gear${i}`"
-            :id="`gear${i}`"
-            v-model="gears[i]"
-            @input="calc(i)"
-          >
-          <input
-            autocomplete="off"
-            v-if="state === SCIENCE"
-            type="number"
-            :name="`compass${i}`"
-            :id="`compass${i}`"
-            v-model="compasses[i]"
-            @input="calc(i)"
+            :id="`player-${j-1}-${i}`"
+            v-model="data[j-1][i]"
+            @input="calcPlayerScore(i)"
           >
         </div>
         <div class="col">
-          <span v-if="state === SCIENCE" class="score">= ({{ score[i] }})</span>
+          <span v-if="isScience" class="score">= ({{ score[i] }})</span>
         </div>
       </div>
       <button class="btn primary">Next</button>
@@ -56,38 +39,33 @@ export default {
     return {
       state: 0,
       score: [],
-      data: [],
-      gears: [],
-      compasses: []
+      data: []
     };
+  },
+  beforeMount() {
+    this.data = this.scores(this.currentPhase.name).slice();
   },
   mounted() {
     this.init();
-    this.calc(1);
   },
   computed: {
-    SCIENCE: function() {
-      return this.phases.includes("Seekrieg") ? 6 : 5;
+    currentPhase: function() {
+      return this.phases[this.state];
+    },
+    // Returns if we are currently in the science state.
+    isScience: function() {
+      return this.currentPhase.name === "science";
     },
     ...mapState({
-      players: state => state.game.players
+      players: state => state.game.players,
+      phases: state => state.game.phases
     }),
-    ...mapGetters(["phases", "scores"])
+    ...mapGetters(["scores"])
   },
   methods: {
     next() {
-      if (this.state === this.SCIENCE) {
-        this.setScore({
-          key: this.state,
-          values: {
-            plates: this.data,
-            gears: this.gears,
-            compasses: this.compasses
-          }
-        });
-      } else {
-        this.setScore({ key: this.state, values: this.data });
-      }
+      // Make sure that if no number was entered, the value gets 0.
+      this.setScore({ key: this.currentPhase.name, values: this.data });
 
       if (this.state < this.phases.length - 1) {
         this.state++;
@@ -104,24 +82,29 @@ export default {
         this.init();
       }
     },
-    calc(i = 0) {
-      if (this.state === this.SCIENCE) {
+    // Calculates the score of the player with id i
+    calcPlayerScore(i = 0) {
+      if (this.currentPhase.name === "science") {
         this.score[i] = Helper.calculateScience(
-          this.data[i],
-          this.gears[i],
-          this.compasses[i]
+          this.data[0][i],
+          this.data[1][i],
+          this.data[2][i]
         );
       }
     },
+    // Gets executed each time the player presses next and on loading the page.
     init() {
-      if (this.state === this.SCIENCE) {
-        this.data = this.scores(this.state).plates;
-        this.gears = this.scores(this.state).gears;
-        this.compasses = this.scores(this.state).compasses;
-      } else {
-        this.data = this.scores(this.state);
+      document.getElementById("player-0-0").focus();
+
+      // TODO: initialize the values of the data array
+      // by the scores that are already set.
+      // If no values are set, set values to 0.
+      this.data = this.scores(this.currentPhase.name).slice();
+      if (this.isScience) {
+        for (let i = 0; i < this.players.length; i++) {
+          this.calcPlayerScore(i);
+        }
       }
-      document.getElementById("player0").focus();
     },
     ...mapActions([
       // Takes an object as argument with the following form:
@@ -138,7 +121,6 @@ export default {
 .container {
   text-align: center;
 }
-
 
 nav {
   .icon-container {

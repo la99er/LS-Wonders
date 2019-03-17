@@ -1,14 +1,40 @@
-const phases = {
-  vanilla: [
-    "Krieg",
-    "Geld",
-    "Weltwunder",
-    "Profanbauten",
-    "Märkte",
-    "Wissenschaft",
-    "Gilden"
-  ]
-};
+const phases = [
+  {
+    name: "war",
+    title: "Krieg",
+    inputFields: 1
+  },
+  {
+    name: "money",
+    title: "Geld",
+    inputFields: 1
+  },
+  {
+    name: "wonder",
+    title: "Weltwunder",
+    inputFields: 1
+  },
+  {
+    name: "profane",
+    title: "Profanbauten",
+    inputFields: 1
+  },
+  {
+    name: "market",
+    title: "Märkte",
+    inputFields: 1
+  },
+  {
+    name: "science",
+    title: "Wissenschaft",
+    inputFields: 3
+  },
+  {
+    name: "guild",
+    title: "Gilden",
+    inputFields: 1
+  }
+];
 
 export default {
   /**
@@ -17,26 +43,54 @@ export default {
    * @param {Object} extensions Contains information which extensions are used
    */
   getPhases(extensions) {
-    let result = phases.vanilla;
-    if (extensions.babel && extensions.projects) {
-      result.splice(1, 0, "Babelplättchen & Marker");
-    } else {
-      if (extensions.babel) {
-        result.splice(1, 0, "Babelplättchen");
-      } else if (extensions.projects) {
-        result.splice(1, 0, "Marker");
+    const result = phases.slice(); // Copy original phases into result.
+    if (extensions.babel || extensions.projects) {
+      let title = "";
+      let fields = 1;
+      if (extensions.babel && extensions.projects) {
+        title = "Babelplättchen & Marker";
+        fields = 2;
+      } else if (extensions.babel) {
+        title = "Babelplättchen";
+      } else {
+        title = "Marker";
       }
+      result.splice(1, 0, {
+        name: "babel",
+        title: title,
+        inputFields: fields
+      });
     }
     if (extensions.armada) {
-      result.splice(0, 1, "Landkrieg");
-      result.splice(1, 0, "Seekrieg");
-      result.push("Inselns");
+      result.splice(0, 1, {
+        name: "war",
+        title: "Landkrieg",
+        inputFields: 1
+      });
+      result.splice(1, 0, {
+        name: "navalWar",
+        title: "Seekrieg",
+        inputFields: 1
+      });
+      result.push({
+        name: "island",
+        title: "Werften & Inselns",
+        inputFields: 2
+      });
     }
     if (extensions.leaders) {
-      result.push("Leader");
+      result.push({
+        name: "leader",
+        title: "Leader",
+        inputFields: 1
+      });
     }
     if (extensions.cities) {
-      result.push("Schwarze Karten");
+      result.push({
+        name: "blackCards",
+        title: "Schwarze Karten",
+        inputFields: 1
+      });
     }
     return result;
   }

@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       game: {
+        isSet: false,
         players: [],
         extensions: {
           wonderPack: true,
@@ -95,6 +96,7 @@ export default {
       this.game.players.splice(index - 1, 1);
     },
     startGame() {
+      this.game.isSet = true;
       this.initGame(this.game);
       this.$router.push("assign");
     },

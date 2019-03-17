@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container" @keyup="$router.push('evaluate');">
     <h1>Zuteilung</h1>
     <div class="wrapper">
       <assign
-      v-for="(assignment, index) in assignments"
-      :key="index"
-      :name="assignment.name"
-      :wonder="assignment.wonder"
-      :side="assignment.side"
+        v-for="(assignment, index) in assignments"
+        :key="index"
+        :name="assignment.name"
+        :wonder="assignment.wonder"
+        :side="assignment.side"
       ></assign>
-    </div>    
+    </div>
     <router-link to="/evaluate" class="btn primary">Auswerten</router-link>
   </div>
 </template>

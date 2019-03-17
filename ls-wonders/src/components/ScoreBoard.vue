@@ -5,7 +5,7 @@
       <h5 class="wonder">{{ `${ score.wonder.name } (${ score.wonder.side })` }}</h5>
     </div>
     <div class="content inner">
-      <score-bars />
+      <score-bars :scores="score.single" :id="id"/>
       <div class="total">
         <h5>Total</h5>
         <h5>{{ score.total }}</h5>
@@ -15,14 +15,14 @@
 </template>
 
 <script>
-import ScoreBars from '@/components/ScoreBars.vue'
+import ScoreBars from "@/components/ScoreBars.vue";
 
 export default {
-  props: ["score"],
+  props: ["score", "id"],
   components: {
     ScoreBars
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -60,7 +60,7 @@ export default {
 
     h5 {
       margin: 0;
-    } 
+    }
   }
 }
 </style>
