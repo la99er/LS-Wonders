@@ -5,7 +5,7 @@
       <h5 class="wonder">{{ `${ score.wonder.name } (${ score.wonder.side })` }}</h5>
     </div>
     <div class="content inner">
-      <score-bars :scores="score.single" :id="id"/>
+      <score-bars :scores="score.single" :id="id" :max="max"/>
       <div class="total">
         <h5>Total</h5>
         <h5>{{ score.total }}</h5>
@@ -16,9 +16,20 @@
 
 <script>
 import ScoreBars from "@/components/ScoreBars.vue";
+import Phases from "@/helpers/phases.js";
 
 export default {
-  props: ["score", "id"],
+  props: ["score", "id", "max"],
+  mounted() {
+    const extensions = this.$store.state.game.extensions;
+    let phasesToRemove = Phases.getPhasesToRemove(extensions);
+    phasesToRemove.forEach(number => {
+      const fields = document.querySelectorAll(`.field-${number}`);
+      fields.forEach(field => {
+        field.style = "display: none;";
+      });
+    });
+  },
   components: {
     ScoreBars
   }

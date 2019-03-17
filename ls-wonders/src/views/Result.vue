@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <score-board v-for="(score, index) in scoreTable" :key="index" :score="score" :id="index"/>
+    <score-board
+      v-for="(score, index) in scoreTable"
+      :key="index"
+      :score="score"
+      :id="index"
+      :max="maxScore"
+    />
   </div>
 </template>
 
@@ -28,6 +34,16 @@ export default {
       return result.sort((obj1, obj2) => {
         return obj2.total - obj1.total;
       });
+    },
+    maxScore() {
+      let max = 0;
+      this.scoreTable.forEach(element => {
+        const o = Object.keys(element.single).reduce((a, b) =>
+          element.single[a] > element.single[b] ? a : b
+        );
+        max = Math.max(element.single[o], max);
+      });
+      return max;
     },
     ...mapState({
       players: state => state.game.players,

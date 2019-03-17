@@ -25,7 +25,7 @@ export default new Vuex.Store({
         market: [[]],
         science: [[], [], []],
         guild: [[]],
-        islands: [[]],
+        island: [[], []],
         leader: [[]],
         blackCards: [[]]
       },
@@ -35,7 +35,8 @@ export default new Vuex.Store({
         leaders: false,
         cities: false,
         armada: false,
-        babylon: false
+        babel: false,
+        projects: false
       },
       easy: false
     }
@@ -95,6 +96,7 @@ export default new Vuex.Store({
 
       // Initialize all phases.
       const p = Phases.getPhases(game.extensions);
+      console.log(p);
       Object.assign(game, { ["phases"]: p });
 
       commit(SET_GAME, game);

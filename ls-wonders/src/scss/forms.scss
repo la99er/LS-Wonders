@@ -1,12 +1,15 @@
 form {
-
-  .form-line, .form-group {
+  .form-line,
+  .form-group {
     margin-bottom: 8px;
   }
   hr {
     border: 0;
     border-top: 3px double #ccc;
     width: 100%;
+  }
+
+  .check-small {
   }
 
   .form-line {
@@ -16,8 +19,8 @@ form {
       display: inline-block;
       min-width: 80px;
     }
-    
-    input[type=text] {
+
+    input[type="text"] {
       background: transparent;
       height: 18px;
       border: 2px solid;
@@ -25,8 +28,6 @@ form {
       width: 50%;
       border-color: rgba(#000, 0.6);
     }
-
-    
 
     .wrapper {
       display: inline-block;
@@ -50,7 +51,7 @@ form {
       width: 100%;
       text-align: left;
     }
-    
+
     .wrapper {
       margin: 0 4px;
     }
@@ -65,9 +66,8 @@ form {
       -moz-appearance: textfield;
     }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button
-    {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
@@ -79,13 +79,14 @@ form {
     cursor: pointer;
     padding: 4px;
     user-select: none;
+    -webkit-tap-highlight-color: transparent; // Only for chrome on android
   }
-  
+
   // Hide the original checkbox
   input[type="checkbox"] {
     display: none;
   }
-  
+
   // Display the new checkbox infront of the label
   input[type="checkbox"] + label:before {
     content: "\2714";
@@ -97,19 +98,19 @@ form {
     padding-left: 4px;
     padding-bottom: 4px;
     margin-right: 8px;
-    color: transparent;  // Hide if not checked
+    color: transparent; // Hide if not checked
     transition: 0.2s;
     background-image: radial-gradient(#cbcfcb 50%, #5f635d);
   }
-  
+
   // Animate on clicking
   input[type="checkbox"] + label:active:before {
     transform: scale(0);
   }
-  
+
   // If checkbox is checked
   input[type="checkbox"]:checked + label:before {
-    color: #b5863a;  // Show the font
+    color: #b5863a; // Show the font
   }
 }
 

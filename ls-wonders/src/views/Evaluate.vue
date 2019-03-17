@@ -100,6 +100,7 @@ export default {
       // by the scores that are already set.
       // If no values are set, set values to 0.
       this.data = this.scores(this.currentPhase.name).slice();
+      console.log(this.data);
       if (this.isScience) {
         for (let i = 0; i < this.players.length; i++) {
           this.calcPlayerScore(i);

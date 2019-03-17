@@ -1,6 +1,6 @@
 <template>
   <div class="scores">
-    <div class="bar-container" v-for="n in 12" :key="n">
+    <div class="bar-container" v-for="n in 12" :key="n" :class="`field-${n}`">
       <span :id="`score-${id}-${n}`" :class="`score score-${n}`">0</span>
       <div :id="`bar-${id}-${n}`" :class="`bar bar-${n}`"></div>
       <div :class="`icon img-${n}`"></div>
@@ -31,19 +31,17 @@ export default {
         };
       }
     },
-    // maxValue: {
-    //   type: Number,
-    //   default: 20
-    // },
     id: {
+      type: Number
+    },
+    max: {
       type: Number
     }
   },
   mounted() {
     let index = 1;
     for (let score in this.scores) {
-      const height =
-        Math.min(this.scores[score] / this.maxValue, 1) * factor * 100;
+      const height = Math.min(this.scores[score] / this.max, 1) * factor * 100;
       document.getElementById(
         `bar-${this.id}-${index}`
       ).style = `height: ${Math.max(height, 1)}%;`;

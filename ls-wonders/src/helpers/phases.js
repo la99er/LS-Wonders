@@ -93,5 +93,30 @@ export default {
       });
     }
     return result;
+  },
+
+  /**
+   * war: 1
+   * returns an array of all numbers that belong to the phases that
+   * should not get displayed at the final result.
+   * navalWar: 2, babel: 3, islands: 10, leaders: 11, blackCards: 12
+   * @param {Object} extensions Information, which extension is enabled.
+   */
+  getPhasesToRemove(extensions) {
+    let result = [];
+    if (!extensions.armada) {
+      result.push(2);
+      result.push(10);
+    }
+    if (!extensions.babel && !extensions.projects) {
+      result.push(3);
+    }
+    if (!extensions.leaders) {
+      result.push(11);
+    }
+    if (!extensions.blackCards) {
+      result.push(12);
+    }
+    return result;
   }
 };
