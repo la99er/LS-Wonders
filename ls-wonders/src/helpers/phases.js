@@ -75,7 +75,7 @@ export default {
       result.push({
         name: "island",
         title: "Werften & Inselns",
-        inputFields: 2
+        inputFields: 1
       });
     }
     if (extensions.leaders) {
@@ -114,7 +114,7 @@ export default {
     if (!extensions.leaders) {
       result.push(11);
     }
-    if (!extensions.blackCards) {
+    if (!extensions.cities) {
       result.push(12);
     }
     return result;

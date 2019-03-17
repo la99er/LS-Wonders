@@ -25,7 +25,7 @@ export default new Vuex.Store({
         market: [[]],
         science: [[], [], []],
         guild: [[]],
-        island: [[], []],
+        island: [[]],
         leader: [[]],
         blackCards: [[]]
       },

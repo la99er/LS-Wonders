@@ -7,6 +7,7 @@
       :id="index"
       :max="maxScore"
     />
+    <router-link to="/" class="btn primary">Neues Spiel</router-link>
   </div>
 </template>
 
