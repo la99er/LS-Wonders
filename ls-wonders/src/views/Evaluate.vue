@@ -100,7 +100,6 @@ export default {
       // by the scores that are already set.
       // If no values are set, set values to 0.
       this.data = this.scores(this.currentPhase.name).slice();
-      console.log(this.data);
       if (this.isScience) {
         for (let i = 0; i < this.players.length; i++) {
           this.calcPlayerScore(i);
@@ -124,19 +123,19 @@ export default {
 }
 
 nav {
+  position: relative;
   .icon-container {
+    position: absolute;
     height: 30px;
     width: 30px;
     text-align: center;
     line-height: 30px;
     cursor: pointer;
-    float: left;
+    left: calc(10% - 10px);
   }
   h3 {
     margin: 4px 10px;
     display: inline-block;
-    position: relative;
-    right: 14px;
   }
 }
 </style>

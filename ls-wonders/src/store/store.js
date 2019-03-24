@@ -96,7 +96,6 @@ export default new Vuex.Store({
 
       // Initialize all phases.
       const p = Phases.getPhases(game.extensions);
-      console.log(p);
       Object.assign(game, { ["phases"]: p });
 
       commit(SET_GAME, game);
