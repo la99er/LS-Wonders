@@ -1,6 +1,14 @@
-h2 {
+@import "mixins.scss";
+
+h1 {
   margin: 0;
+  font-size: 1.2rem;
+
+  @include phone-l() {
+    font-size: 1.5rem;
+  }
 }
+
 a.btn {
   text-decoration: none;
   width: 100px;
