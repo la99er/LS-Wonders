@@ -92,7 +92,7 @@ $colors: (
     width: 8%;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     .score {
       font-size: 10px;
